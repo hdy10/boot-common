@@ -1,7 +1,5 @@
 package com.github.hdy.common.util;
 
-import com.github.hdy.jdbcplus.util.Logs;
-
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
