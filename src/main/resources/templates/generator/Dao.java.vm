@@ -1,0 +1,31 @@
+package ${package}.${moduleName}.dao;
+
+import com.github.hdy.jdbcplus.data.db.BaseDao;
+import ${package}.${moduleName}.entity.${className};
+import ${package}.${moduleName}.dao.${className}Dao;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Repository
+public class ${className}Dao extends BaseDao<${className}, #foreach($column in $columns)#if($column.columnName == $pk.columnName)$column.attrType#end#end> {
+
+    public Page<${className}> page(${className} ${classname}, Integer pageNumber, Integer pageSize) {
+        return super.page(${classname}, pageNumber, pageSize);
+    }
+
+    public TbUser insert(${className} ${classname}) {
+        return super.insert(${classname});
+    }
+
+    public TbUser update(${className} ${classname}) {
+        return super.update(${classname});
+    }
+
+    public int delete(#foreach($column in $columns)#if($column.columnName == $pk.columnName)$column.attrType#end#end id) {
+        return super.delete(id);
+    }
+}

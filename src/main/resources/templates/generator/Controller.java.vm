@@ -1,0 +1,70 @@
+package ${package}.${moduleName}.controller;
+
+import com.github.hdy.jdbcplus.result.PageResults;
+import com.github.hdy.jdbcplus.result.Results;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ResponseBody;
+import ${package}.${moduleName}.entity.${className};
+import ${package}.${moduleName}.service.${className}Service;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Controller
+@RequestMapping("/${pathName}")
+public class ${className}Controller {
+
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+    /**
+     * 简单分页查询
+     * @param pageNumber 页码
+     * @param pageSize   每页显示的条数
+     * @return PageResults
+     */
+    @GetMapping("/page")
+    @ResponseBody
+    public PageResults page(${classname} ${classname}, Integer pageNumber, Integer pageSize) {
+        return ${classname}Service.page(${classname}, pageNumber, pageSize);
+    }
+
+    /**
+     * 新增记录
+     * @param ${classname}
+     * @return Results
+     */
+    @PostMapping("/insert")
+    @ResponseBody
+    public Results insert(${classname} ${classname}) {
+        return ${classname}Service.insert(${classname});
+    }
+
+    /**
+     * 修改记录
+     * @param ${classname}
+     * @return Results
+     */
+    @PutMapping("update")
+    @ResponseBody
+    public Results update(${classname} ${classname}) {
+        return ${classname}Service.update(${classname});
+    }
+
+    /**
+     * 通过id删除一条记录
+     * @param ${classname}
+     * @return Results
+     */
+    @DeleteMapping("/delete")
+    @ResponseBody
+    public Results delete(${classname} ${classname}) {
+        return ${classname}Service.delete(${classname});
+    }
+
+}
