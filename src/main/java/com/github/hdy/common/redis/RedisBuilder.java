@@ -1,6 +1,6 @@
 package com.github.hdy.common.redis;
 
-import com.github.hdy.common.util.StringUtils;
+import com.github.hdy.common.util.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import redis.clients.jedis.*;
@@ -15,11 +15,11 @@ public class RedisBuilder {
     public static void initRedis(String redis_serviceName, String redis_ip, int redis_port, int redis_maxTotal, int
             redis_maxIdle, int redis_maxWaitMillis, boolean redis_testOnBorrow, String redis_pwd) {
         // 池基本配置
-        if (StringUtils.isNull(redis_serviceName, redis_ip, redis_port) ||
-                (StringUtils.isEquals(redis_port, 0) ||
-                        StringUtils.isEquals(redis_maxTotal, 0) ||
-                        StringUtils.isEquals(redis_maxIdle, 0) ||
-                        StringUtils.isEquals(redis_maxWaitMillis, 0))) {
+        if (Strings.isNull(redis_serviceName, redis_ip, redis_port) ||
+                (Strings.isEquals(redis_port, 0) ||
+                        Strings.isEquals(redis_maxTotal, 0) ||
+                        Strings.isEquals(redis_maxIdle, 0) ||
+                        Strings.isEquals(redis_maxWaitMillis, 0))) {
             logger.error("redis开启失败");
             default_redis();
             return;
@@ -40,7 +40,7 @@ public class RedisBuilder {
             logger.info("serviceName:{},ip:{},port:{},MaxTotal:{},MaxIdle:{},MaxWaitMillis:{},TestOnBorrow:{}", str[i], redis_ip, redis_port, redis_maxTotal, redis_maxIdle, redis_maxWaitMillis, redis_testOnBorrow);
             List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
             JedisShardInfo jedisShardInfo = new JedisShardInfo(redis_ip, redis_port);
-            if (!StringUtils.isNull(redis_pwd)) {
+            if (!Strings.isNull(redis_pwd)) {
                 jedisShardInfo.setPassword(redis_pwd);
             }
             shards.add(jedisShardInfo);
@@ -48,7 +48,7 @@ public class RedisBuilder {
             REDIS_MAP.put(str[i], shardedJedisPool);
 
             Jedis jedis = new Jedis(redis_ip, redis_port);
-            if (!StringUtils.isNull(redis_pwd))
+            if (!Strings.isNull(redis_pwd))
                 jedis.auth(redis_pwd);
             RedisClient.REDIS_MAP.put(str[i], jedis);
         }
@@ -141,7 +141,7 @@ public class RedisBuilder {
             logger.info("serviceName:{},ip:{},port:{},MaxTotal:{},MaxIdle:{},MaxWaitMillis:{},TestOnBorrow:{}", str[i], ip, port, MaxTotal, MaxIdle, MaxWaitMillis, TestOnBorrow);
             List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
             JedisShardInfo jedisShardInfo = new JedisShardInfo(ip, port, 100000);
-            if (!StringUtils.isNull(pwd)) {
+            if (!Strings.isNull(pwd)) {
                 jedisShardInfo.setPassword(pwd);
             }
             shards.add(jedisShardInfo);

@@ -271,7 +271,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
             // 获取URLConnection对象对应的输出流
             PrintWriter printWriter = new PrintWriter(httpCon.getOutputStream());
             // 发送请求参数
-            if (!com.github.hdy.common.util.StringUtils.isNull(params))
+            if (!Strings.isNull(params))
                 printWriter.write(params.toString());//post的参数 xx=xx&yy=yy
             // flush输出流的缓冲
             printWriter.flush();
@@ -387,7 +387,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
             // 获取URLConnection对象对应的输出流
             PrintWriter printWriter = new PrintWriter(httpCon.getOutputStream());
             // 发送请求参数
-            if (!com.github.hdy.common.util.StringUtils.isNull(params))
+            if (!Strings.isNull(params))
                 printWriter.write(params.toString());//post的参数 xx=xx&yy=yy
             // flush输出流的缓冲
             printWriter.flush();

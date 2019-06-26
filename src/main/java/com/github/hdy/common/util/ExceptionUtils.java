@@ -21,7 +21,7 @@ public class ExceptionUtils {
      * @return 返回异常
      */
     public static SpringbootException mpe(String msg, Throwable t, Object... params) {
-        return new SpringbootException(StringUtils.format(msg, params), t);
+        return new SpringbootException(Strings.format(msg, params), t);
     }
 
     /**
@@ -32,7 +32,7 @@ public class ExceptionUtils {
      * @return 返回异常
      */
     public static SpringbootException mpe(String msg, Object... params) {
-        return new SpringbootException(StringUtils.format(msg, params));
+        return new SpringbootException(Strings.format(msg, params));
     }
 
     /**

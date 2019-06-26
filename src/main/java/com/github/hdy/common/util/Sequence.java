@@ -77,7 +77,7 @@ public class Sequence {
         StringBuilder mpid = new StringBuilder();
         mpid.append(datacenterId);
         String name = ManagementFactory.getRuntimeMXBean().getName();
-        if (StringUtils.isNotEmpty(name)) {
+        if (Strings.isNotEmpty(name)) {
             /*
              * GET jvmPid
              */

@@ -1,6 +1,10 @@
 package com.github.hdy.common.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
@@ -14,7 +18,7 @@ import java.util.regex.Pattern;
  * @author 贺大爷
  * @date 2019/6/25
  */
-public class StringUtils {
+public class Strings {
 
     /**
      * 空字符
@@ -33,7 +37,7 @@ public class StringUtils {
      */
     private static final Pattern P_IS_COLUMN = Pattern.compile("^\\w\\S*[\\w\\d]*$");
 
-    private StringUtils() {
+    private Strings() {
         // to do nothing
     }
 
@@ -140,6 +144,45 @@ public class StringUtils {
         return !P_IS_COLUMN.matcher(str).matches();
     }
 
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static <T> Class<T> getClassGenricType(final Class clazz) {
+        return getClassGenricType(clazz, 0);
+    }
+
+    /**
+     * 通过反射, 获得Class定义中声明的父类的泛型参数的类型.
+     * 如无法找到, 返回Object.class.
+     * 如public baseDao extends HibernateDao<User,Long>
+     *
+     * @param clazz clazz The class to introspect
+     * @param index the Index of the generic ddeclaration,start from 0.
+     *
+     * @return the index generic declaration, or Object.class if cannot be determined
+     */
+    @SuppressWarnings({"rawtypes"})
+    public static Class getClassGenricType(final Class clazz, final int index) {
+
+        Type genType = clazz.getGenericSuperclass();
+
+        if (!(genType instanceof ParameterizedType)) {
+            Logs.warn(clazz.getSimpleName() + "'s superclass not ParameterizedType");
+            return Object.class;
+        }
+
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+
+        if (index >= params.length || index < 0) {
+            Logs.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: " + params.length);
+            return Object.class;
+        }
+        if (!(params[index] instanceof Class)) {
+            Logs.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
+            return Object.class;
+        }
+        return (Class) params[index];
+    }
+
     /**
      * 字符串驼峰转下划线格式
      *
@@ -177,7 +220,7 @@ public class StringUtils {
             getMethodName = getMethodName.substring(2);
         }
         // 小写第一个字母
-        return StringUtils.firstToLowerCase(getMethodName);
+        return Strings.firstToLowerCase(getMethodName);
     }
 
     /**
@@ -353,6 +396,88 @@ public class StringUtils {
     }
 
     /**
+     * <p>
+     * Checks if CharSequence contains a search CharSequence irrespective of case, handling {@code null}. Case-insensitivity is defined as by {@link String#equalsIgnoreCase(String)}.
+     * </p>
+     * <p/>
+     * <pre>
+     * StringUtils.contains(null, *) = false
+     * StringUtils.contains(*, null) = false
+     * StringUtils.contains("", "") = true
+     * StringUtils.contains("abc", "") = true
+     * StringUtils.contains("abc", "a") = true
+     * StringUtils.contains("abc", "z") = false
+     * StringUtils.contains("abc", "A") = true
+     * StringUtils.contains("abc", "Z") = false
+     * </pre>
+     */
+    public static boolean isContainsIgnoreCase(final CharSequence str, final CharSequence searchStr) {
+        return StringUtils.containsIgnoreCase(str, searchStr);
+    }
+
+    /**
+     * <p>
+     * Gets the substring after the last occurrence of a separator. The separator is not returned.
+     * </p>
+     * <p/>
+     * <pre>
+     * StringUtils.substringAfterLast(null, *)      = null
+     * StringUtils.substringAfterLast("", *)        = ""
+     * StringUtils.substringAfterLast(*, "")        = ""
+     * StringUtils.substringAfterLast(*, null)      = ""
+     * StringUtils.substringAfterLast("abc", "a")   = "bc"
+     * StringUtils.substringAfterLast("abcba", "b") = "a"
+     * StringUtils.substringAfterLast("abc", "c")   = ""
+     * StringUtils.substringAfterLast("a", "a")     = ""
+     * StringUtils.substringAfterLast("a", "z")     = ""
+     * </pre>
+     */
+    public static String substringAfterLast(String str, String separator) {
+        return StringUtils.substringAfterLast(str, separator);
+    }
+
+    /**
+     * <p>
+     * Checks if CharSequence contains a search CharSequence, handling {@code null}. This method uses {@link String#indexOf(String)} if possible.
+     * </p>
+     * <p/>
+     * <pre>
+     * StringUtils.contains(null, *)     = false
+     * StringUtils.contains(*, null)     = false
+     * StringUtils.contains("", "")      = true
+     * StringUtils.contains("abc", "")   = true
+     * StringUtils.contains("abc", "a")  = true
+     * StringUtils.contains("abc", "z")  = false
+     * </pre>
+     */
+    public static boolean isContains(final CharSequence seq, final CharSequence searchSeq) {
+        return StringUtils.contains(seq, searchSeq);
+    }
+
+    /**
+     * 找到指定的字符串开头位置（忽略大小写）
+     * <p>
+     * Case in-sensitive find of the first index within a CharSequence.
+     * </p>
+     * <p/>
+     * <pre>
+     * Strings.indexOfIgnoreCase(null, *)          = -1
+     * Strings.indexOfIgnoreCase(*, null)          = -1
+     * Strings.indexOfIgnoreCase("", "")           = 0
+     * Strings.indexOfIgnoreCase("aabaabaa", "a")  = 0
+     * Strings.indexOfIgnoreCase("aabaabaa", "b")  = 2
+     * Strings.indexOfIgnoreCase("aabaabaa", "ab") = 1
+     * </pre>
+     */
+    public static int indexOfIgnoreCase(final CharSequence str, final CharSequence searchStr) {
+        return StringUtils.indexOfIgnoreCase(str, searchStr, 0);
+    }
+
+    public static String substring(String str, int start) {
+        return StringUtils.substring(str, start);
+    }
+
+    /**
      * 去除boolean类型is开头的字符串
      *
      * @param propertyName 字段名
@@ -384,8 +509,8 @@ public class StringUtils {
 
     /**
      * 第一个首字母小写，之后字符大小写的不变
-     * <p>StringUtils.firstCharToLower( "UserService" )     = userService</p>
-     * <p>StringUtils.firstCharToLower( "UserServiceImpl" ) = userServiceImpl</p>
+     * <p>Strings.firstCharToLower( "UserService" )     = userService</p>
+     * <p>Strings.firstCharToLower( "UserServiceImpl" ) = userServiceImpl</p>
      *
      * @param rawString 需要处理的字符串
      *
@@ -411,8 +536,8 @@ public class StringUtils {
 
     /**
      * 删除字符前缀之后,首字母小写,之后字符大小写的不变
-     * <p>StringUtils.removePrefixAfterPrefixToLower( "isUser", 2 )     = user</p>
-     * <p>StringUtils.removePrefixAfterPrefixToLower( "isUserInfo", 2 ) = userInfo</p>
+     * <p>Strings.removePrefixAfterPrefixToLower( "isUser", 2 )     = user</p>
+     * <p>Strings.removePrefixAfterPrefixToLower( "isUserInfo", 2 ) = userInfo</p>
      *
      * @param rawString 需要处理的字符串
      * @param index     删除多少个字符(从左至右)

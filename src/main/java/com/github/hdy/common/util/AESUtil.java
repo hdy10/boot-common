@@ -47,7 +47,7 @@ public class AESUtil {
      * @return
      */
     public static String windowsEncrypt(String content, String keys) {
-        if (StringUtils.isNull(keys)) {
+        if (Strings.isNull(keys)) {
             keys = PASSWORD;
         }
         try {
@@ -86,7 +86,7 @@ public class AESUtil {
      * @return
      */
     public static String linuxEncrypt(String content, String keys) {
-        if (StringUtils.isNull(keys)) {
+        if (Strings.isNull(keys)) {
             keys = PASSWORD;
         }
         try {
@@ -144,7 +144,7 @@ public class AESUtil {
      * @return
      */
     public static String windowsDecrypt(String contents, String keys) {
-        if (StringUtils.isNull(keys)) {
+        if (Strings.isNull(keys)) {
             keys = PASSWORD;
         }
         byte[] content = parseHexStr2Byte(contents);
@@ -184,7 +184,7 @@ public class AESUtil {
      * @return
      */
     public static String linuxDecrypt(String contents, String keys) {
-        if (StringUtils.isNull(keys)) {
+        if (Strings.isNull(keys)) {
             keys = PASSWORD;
         }
         byte[] content = parseHexStr2Byte(contents);

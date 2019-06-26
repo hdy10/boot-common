@@ -3,7 +3,7 @@ package ${package}.${moduleName}.service;
 import ${package}.${moduleName}.dao.${className}Dao;
 import ${package}.${moduleName}.entity.${className};
 import com.github.hdy.common.result.Results;
-import com.github.hdy.common.util.StringUtils;
+import com.github.hdy.common.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,27 +19,27 @@ public class ${className}Service {
     @Autowired
     private ${className}Dao ${className}Dao;
 
-    public PageResults page(${classname} ${classname}, Integer pageNumber, Integer pageSize) {
+    public Results page(${classname} ${classname}, Integer pageNumber, Integer pageSize) {
         return ${className}Dao.page(${classname}, pageNumber, pageSize);
     }
 
     public Results insert(${className} ${classname}) {
         ${classname} =${className}Dao.insert(${classname});
         if (${classname} ==null)
-        return Results.fail();
+            return Results.fail();
         return Results.success();
     }
 
     public Results update(${className} ${classname}) {
         ${classname} =${className}Dao.update(${classname});
         if (${classname} ==null)
-        return Results.fail();
+            return Results.fail();
         return Results.success();
     }
 
     public Results delete(${className} ${classname}) {
-        if (TypeConvert.isNull(${classname}.getId()))
-        return Results.fail("参数缺失");
+        if (Strings.isNull(${classname}.getId()))
+            return Results.fail("参数缺失");
         int k = ${className}Dao.delete(${classname}.getId());
         if (k > 0)
             return Results.success();

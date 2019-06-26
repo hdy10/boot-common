@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
  * Created by hdy on 2017/10/17.
  */
 public class Logs {
-    private static final Logger logger = LogManager.getLogger(com.github.hdy.jdbcplus.util.Logs.class.getName());
+    private static final Logger logger = LogManager.getLogger(Logs.class.getName());
 
     public static void debug(Object msg) {
         logger.debug("\u001b[33m" + msg + "\u001b[0m");

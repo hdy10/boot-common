@@ -1,7 +1,7 @@
 package com.github.hdy.common.redis;
 
 import com.github.hdy.common.util.Logs;
-import com.github.hdy.common.util.StringUtils;
+import com.github.hdy.common.util.Strings;
 import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.Tuple;
 
@@ -377,7 +377,7 @@ public class RedisTemplate {
      */
     public static boolean repeatRequest(String key, int seconds) {
         String s = RedisTemplate.getString(SourceType.Redis, key);
-        if (!StringUtils.isNull(s)) {
+        if (!Strings.isNull(s)) {
             Logs.error("重复请求");
             return false;
         }
