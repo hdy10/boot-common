@@ -6,7 +6,7 @@
 
     <groupId>com.github.hdy10</groupId>
     <artifactId>boot-common</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>boot-common</name>
     <description>基于springboot的一些简单工具</description>
     <url>https://github.com/hdy10/boot-common/</url>
@@ -114,7 +114,11 @@
             <artifactId>commons-configuration</artifactId>
             <version>1.8</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>

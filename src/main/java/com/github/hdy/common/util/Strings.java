@@ -1,6 +1,12 @@
 package com.github.hdy.common.util;
 
+import com.github.hdy.common.entity.TableInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.ParameterizedType;
@@ -9,6 +15,10 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,15 +47,10 @@ public class Strings {
      */
     private static final Pattern P_IS_COLUMN = Pattern.compile("^\\w\\S*[\\w\\d]*$");
 
-    private Strings() {
-        // to do nothing
-    }
-
     /**
      * 判断参数是否为空
      *
      * @param params 需要判断参数
-     *
      * @return 判断结果
      */
     public static boolean isNull(Object... params) {
@@ -59,12 +64,55 @@ public class Strings {
         return false;
     }
 
+    public static String toString(Object obj) {
+        return toString(obj, false);
+    }
+
+    public static String toString(Object obj, boolean prettyFormat) {
+        StringBuffer s = new StringBuffer();
+        if (obj instanceof LocalDate) {
+            s.append(toString(((LocalDate) obj).toDate()));
+        } else if (obj instanceof LocalTime) {
+            s.append(toString(((LocalTime) obj).toString()));
+        } else if (obj instanceof DateTime) {
+            s.append(toString(((DateTime) obj).toDate()));
+        } else if (obj instanceof LocalDateTime) {
+            s.append(toString(((LocalDateTime) obj).toDate()));
+        } else if (obj instanceof List) {
+            List<?> obj_list = (List<?>) obj;
+            s.append('[');
+            for (int i = 0; i < obj_list.size(); i++) {
+                s.append(toString(obj_list.get(i), prettyFormat));
+                if (i < obj_list.size() - 1) {
+                    s.append(',');
+                }
+            }
+            s.append(']');
+        } else if (obj instanceof Map) {
+            Map<?, ?> obj_map = (Map<?, ?>) obj;
+            List<?> obj_map_keys = Lists.newArrayList(obj_map.keySet());
+            s.append('{');
+            for (int i = 0; i < obj_map_keys.size(); i++) {
+                s.append("'" + obj_map_keys.get(i) + "'" + ":" + toString(obj_map.get(obj_map_keys.get(i)), prettyFormat));
+                if (i < obj_map_keys.size() - 1) {
+                    s.append(',');
+                }
+            }
+            s.append('}');
+        } else if (obj instanceof Object[]) {
+            s.append(toString(Lists.newArrayList((Object[]) obj), prettyFormat));
+        } else {
+            s.append(Jsons.toJSONString(obj, prettyFormat));
+        }
+        return s.toString();
+    }
+
+
     /**
      * 安全的进行字符串 format
      *
      * @param target 目标字符串
      * @param params format 参数
-     *
      * @return format 后的
      */
     public static String format(String target, Object... params) {
@@ -78,7 +126,6 @@ public class Strings {
      * Blob 转为 String 格式
      *
      * @param blob Blob 对象
-     *
      * @return 转换后的
      */
     public static String blob2String(Blob blob) {
@@ -97,7 +144,6 @@ public class Strings {
      * 判断字符串是否为空
      *
      * @param cs 需要判断字符串
-     *
      * @return 判断结果
      */
     public static boolean isEmpty(final CharSequence cs) {
@@ -117,7 +163,6 @@ public class Strings {
      * 判断字符串是否不为空
      *
      * @param cs 需要判断字符串
-     *
      * @return 判断结果
      */
     public static boolean isNotEmpty(final CharSequence cs) {
@@ -137,7 +182,6 @@ public class Strings {
      * 判断字符串是否符合数据库字段的命名
      *
      * @param str 字符串
-     *
      * @return 判断结果
      */
     public static boolean isNotColumnName(String str) {
@@ -157,7 +201,6 @@ public class Strings {
      *
      * @param clazz clazz The class to introspect
      * @param index the Index of the generic ddeclaration,start from 0.
-     *
      * @return the index generic declaration, or Object.class if cannot be determined
      */
     @SuppressWarnings({"rawtypes"})
@@ -187,7 +230,6 @@ public class Strings {
      * 字符串驼峰转下划线格式
      *
      * @param param 需要转换的字符串
-     *
      * @return 转换好的字符串
      */
     public static String camelToUnderline(String param) {
@@ -210,7 +252,6 @@ public class Strings {
      * 解析 getMethodName -> propertyName
      *
      * @param getMethodName 需要解析的
-     *
      * @return 返回解析后的字段名称
      */
     public static String resolveFieldName(String getMethodName) {
@@ -227,7 +268,6 @@ public class Strings {
      * 字符串下划线转驼峰格式
      *
      * @param param 需要转换的字符串
-     *
      * @return 转换好的字符串
      */
     public static String underlineToCamel(String param) {
@@ -254,7 +294,6 @@ public class Strings {
      * 首字母转换小写
      *
      * @param param 需要转换的字符串
-     *
      * @return 转换好的字符串
      */
     public static String firstToLowerCase(String param) {
@@ -268,7 +307,6 @@ public class Strings {
      * 判断字符串是否为纯大写字母
      *
      * @param str 要匹配的字符串
-     *
      * @return
      */
     public static boolean isUpperCase(String str) {
@@ -280,7 +318,6 @@ public class Strings {
      *
      * @param regex 正则表达式字符串
      * @param input 要匹配的字符串
-     *
      * @return 如果 input 符合 regex 正则表达式格式, 返回true, 否则返回 false;
      */
     public static boolean matches(String regex, String input) {
@@ -312,7 +349,6 @@ public class Strings {
      * 字符串第一个字母大写
      *
      * @param str 被处理的字符串
-     *
      * @return 首字母大写后的字符串
      */
     public static String capitalize(final String str) {
@@ -323,7 +359,6 @@ public class Strings {
      * 判断对象是否为空
      *
      * @param object ignore
-     *
      * @return ignore
      */
     public static boolean checkValNotNull(Object object) {
@@ -337,7 +372,6 @@ public class Strings {
      * 判断对象是否为空
      *
      * @param object ignore
-     *
      * @return ignore
      */
     public static boolean checkValNull(Object object) {
@@ -348,7 +382,6 @@ public class Strings {
      * 包含大写字母
      *
      * @param word 待判断字符串
-     *
      * @return ignore
      */
     public static boolean containsUpperCase(String word) {
@@ -365,7 +398,6 @@ public class Strings {
      * 是否为大写命名
      *
      * @param word 待判断字符串
-     *
      * @return ignore
      */
     public static boolean isCapitalMode(String word) {
@@ -376,7 +408,6 @@ public class Strings {
      * 是否为驼峰下划线混合命名
      *
      * @param word 待判断字符串
-     *
      * @return ignore
      */
     public static boolean isMixedMode(String word) {
@@ -388,7 +419,6 @@ public class Strings {
      * 是否为CharSequence类型
      *
      * @param clazz class
-     *
      * @return true 为是 CharSequence 类型
      */
     public static boolean isCharSequence(Class<?> clazz) {
@@ -500,7 +530,6 @@ public class Strings {
      * 是否为Boolean类型(包含普通类型)
      *
      * @param propertyCls ignore
-     *
      * @return ignore
      */
     public static boolean isBoolean(Class<?> propertyCls) {
@@ -513,7 +542,6 @@ public class Strings {
      * <p>Strings.firstCharToLower( "UserServiceImpl" ) = userServiceImpl</p>
      *
      * @param rawString 需要处理的字符串
-     *
      * @return ignore
      */
     public static String firstCharToLower(String rawString) {
@@ -525,7 +553,6 @@ public class Strings {
      *
      * @param rawString 需要处理的字符串
      * @param index     多少个字符(从左至右)
-     *
      * @return ignore
      */
     public static String prefixToLower(String rawString, int index) {
@@ -541,7 +568,6 @@ public class Strings {
      *
      * @param rawString 需要处理的字符串
      * @param index     删除多少个字符(从左至右)
-     *
      * @return ignore
      */
     public static String removePrefixAfterPrefixToLower(String rawString, int index) {
@@ -552,7 +578,6 @@ public class Strings {
      * 是否是ajax请求
      *
      * @param request
-     *
      * @return
      */
     public static boolean isAjax(HttpServletRequest request) {
@@ -568,7 +593,6 @@ public class Strings {
      * 保留2位小数,不四舍五入
      *
      * @param str
-     *
      * @return
      */
     public static String FileTo(Double str) {
@@ -587,7 +611,6 @@ public class Strings {
      * 判断是否为数字
      *
      * @param str
-     *
      * @return
      */
     public static boolean isNumeric(String str) {
@@ -605,7 +628,6 @@ public class Strings {
      * @param number   double类型的数字
      * @param floatNum 保留几位
      * @param isSymbol 是否要加符号(%)
-     *
      * @return
      */
     public static String NumberToRate(float number, int floatNum, boolean isSymbol) {
@@ -623,7 +645,6 @@ public class Strings {
      *
      * @param number 数据
      * @param scale  保留多少位
-     *
      * @return
      */
     public static double getCutNumAfterDot(float number, int scale) {

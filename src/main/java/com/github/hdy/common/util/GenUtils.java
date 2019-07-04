@@ -8,6 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import com.github.hdy.common.entity.ColumnEntity;
 import com.github.hdy.common.entity.GenConfig;
 import com.github.hdy.common.entity.TableEntity;
+import com.github.hdy.common.entity.TableInfo;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.configuration.Configuration;
@@ -52,19 +53,19 @@ public class GenUtils {
     /**
      * 生成代码
      */
-    public void generatorCode(GenConfig genConfig, Map<String, String> table,
-                              List<Map<String, String>> columns, ZipOutputStream zip) throws Exception {
+    public void generatorCode(GenConfig genConfig, TableInfo table,
+                              List<Map<String, Object>> columns, ZipOutputStream zip) throws Exception {
         //配置信息
         Configuration config = getConfig();
         boolean hasBigDecimal = false;
         //表信息
         TableEntity tableEntity = new TableEntity();
-        tableEntity.setTableName(table.get("tableName"));
+        tableEntity.setTableName(table.getTableName());
 
         if (StrUtil.isNotBlank(genConfig.getComments())) {
             tableEntity.setComments(genConfig.getComments());
         } else {
-            tableEntity.setComments(table.get("tableComment"));
+            tableEntity.setComments(table.getTableComment());
         }
 
         String tablePrefix;
@@ -81,12 +82,12 @@ public class GenUtils {
 
         //列信息
         List<ColumnEntity> columnList = new ArrayList<>();
-        for (Map<String, String> column : columns) {
+        for (Map<String, Object> column : columns) {
             ColumnEntity columnEntity = new ColumnEntity();
-            columnEntity.setColumnName(column.get("columnName"));
-            columnEntity.setDataType(column.get("dataType"));
-            columnEntity.setComments(column.get("columnComment"));
-            columnEntity.setExtra(column.get("extra"));
+            columnEntity.setColumnName(Strings.toString(column.get("columnName")));
+            columnEntity.setDataType(Strings.toString(column.get("dataType")));
+            columnEntity.setComments(Strings.toString(column.get("columnComment")));
+            columnEntity.setExtra(Strings.toString(column.get("extra")));
 
             //列名转换成Java属性名
             String attrName = columnToJava(columnEntity.getColumnName());
@@ -100,7 +101,7 @@ public class GenUtils {
                 hasBigDecimal = true;
             }
             //是否主键
-            if ("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null) {
+            if ("PRI".equalsIgnoreCase(Strings.toString(column.get("columnKey"))) && tableEntity.getPk() == null) {
                 tableEntity.setPk(columnEntity);
             }
 
