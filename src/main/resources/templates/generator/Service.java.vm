@@ -19,8 +19,8 @@ public class ${className}Service {
     @Autowired
     private ${className}Dao ${className}Dao;
 
-    public Results page(${classname} ${classname}, Integer pageNumber, Integer pageSize) {
-        return ${className}Dao.page(${classname}, pageNumber, pageSize);
+    public Results page(${className} ${classname}, Integer pageNumber, Integer pageSize) {
+        return Results.success(${className}Dao.page(${classname}, pageNumber, pageSize));
     }
 
     public Results insert(${className} ${classname}) {

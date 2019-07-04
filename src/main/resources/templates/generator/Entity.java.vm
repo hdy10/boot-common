@@ -3,9 +3,12 @@ package ${package}.${moduleName}.entity;
 import com.github.hdy.jdbcplus.data.annotation.Entity;
 import com.github.hdy.jdbcplus.data.annotation.Id;
 import lombok.Data;
-    #if(${hasBigDecimal})
-    import java.math.BigDecimal;
-    #end
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+#if(${hasDate})
+import java.util.Date;
+#end
 
 /**
  * ${comments}
@@ -22,7 +25,8 @@ public class ${className} {
  * $column.comments
  */
     #if($column.columnName == $pk.columnName)
-    @Id
+    @Id#if($column.extra == 'auto_increment')(automatic = true)
+    #end
     #end
 private $column.attrType $column.lowerAttrName;
 #end

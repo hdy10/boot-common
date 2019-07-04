@@ -1,6 +1,6 @@
 package ${package}.${moduleName}.controller;
 
-import com.github.hdy.jdbcplus.result.Results;
+import com.github.hdy.common.result.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +29,7 @@ public class ${className}Controller {
      */
     @RequestMapping("/page")
     @ResponseBody
-    public Results page(${classname} ${classname}, Integer pageNumber, Integer pageSize) {
+    public Results page(${className} ${classname}, Integer pageNumber, Integer pageSize) {
         return ${classname}Service.page(${classname}, pageNumber, pageSize);
     }
 
@@ -40,7 +40,7 @@ public class ${className}Controller {
      */
     @RequestMapping("/insert")
     @ResponseBody
-    public Results insert(${classname} ${classname}) {
+    public Results insert(${className} ${classname}) {
         return ${classname}Service.insert(${classname});
     }
 
@@ -51,7 +51,7 @@ public class ${className}Controller {
      */
     @RequestMapping("update")
     @ResponseBody
-    public Results update(${classname} ${classname}) {
+    public Results update(${className} ${classname}) {
         return ${classname}Service.update(${classname});
     }
 
@@ -62,7 +62,7 @@ public class ${className}Controller {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public Results delete(${classname} ${classname}) {
+    public Results delete(${className} ${classname}) {
         return ${classname}Service.delete(${classname});
     }
 

@@ -101,6 +101,8 @@ public class Strings {
             s.append('}');
         } else if (obj instanceof Object[]) {
             s.append(toString(Lists.newArrayList((Object[]) obj), prettyFormat));
+        } else if (obj instanceof String) {
+            return obj.toString();
         } else {
             s.append(Jsons.toJSONString(obj, prettyFormat));
         }
@@ -233,6 +235,17 @@ public class Strings {
      * @return 转换好的字符串
      */
     public static String camelToUnderline(String param) {
+        return camelToCustom(param, UNDERLINE);
+    }
+
+    /**
+     * 字符串驼峰转自定义字符标识
+     *
+     * @param param   需要转换的字符串
+     * @param replace 自定义标识符
+     * @return
+     */
+    public static String camelToCustom(String param, char replace) {
         if (isEmpty(param)) {
             return EMPTY;
         }
@@ -241,7 +254,7 @@ public class Strings {
         for (int i = 0; i < len; i++) {
             char c = param.charAt(i);
             if (Character.isUpperCase(c) && i > 0) {
-                sb.append(UNDERLINE);
+                sb.append(replace);
             }
             sb.append(Character.toLowerCase(c));
         }

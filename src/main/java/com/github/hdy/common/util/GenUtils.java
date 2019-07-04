@@ -58,6 +58,7 @@ public class GenUtils {
         //配置信息
         Configuration config = getConfig();
         boolean hasBigDecimal = false;
+        boolean hasDate = false;
         //表信息
         TableEntity tableEntity = new TableEntity();
         tableEntity.setTableName(table.getTableName());
@@ -87,8 +88,8 @@ public class GenUtils {
             columnEntity.setColumnName(Strings.toString(column.get("columnName")));
             columnEntity.setDataType(Strings.toString(column.get("dataType")));
             columnEntity.setComments(Strings.toString(column.get("columnComment")));
-            columnEntity.setExtra(Strings.toString(column.get("extra")));
-
+            String extra = Strings.toString(column.get("extra"));
+            columnEntity.setExtra(Strings.toString(Strings.isNull(extra) ? null : extra.toLowerCase()));
             //列名转换成Java属性名
             String attrName = columnToJava(columnEntity.getColumnName());
             columnEntity.setCaseAttrName(attrName);
@@ -99,6 +100,9 @@ public class GenUtils {
             columnEntity.setAttrType(attrType);
             if (!hasBigDecimal && "BigDecimal".equals(attrType)) {
                 hasBigDecimal = true;
+            }
+            if (!hasDate && "Date".equals(attrType)) {
+                hasDate = true;
             }
             //是否主键
             if ("PRI".equalsIgnoreCase(Strings.toString(column.get("columnKey"))) && tableEntity.getPk() == null) {
@@ -124,9 +128,10 @@ public class GenUtils {
         map.put("pk", tableEntity.getPk());
         map.put("className", tableEntity.getCaseClassName());
         map.put("classname", tableEntity.getLowerClassName());
-        map.put("pathName", tableEntity.getLowerClassName().toLowerCase());
+        map.put("pathName", Strings.camelToCustom(tableEntity.getLowerClassName(), '/'));
         map.put("columns", tableEntity.getColumns());
         map.put("hasBigDecimal", hasBigDecimal);
+        map.put("hasDate", hasDate);
         map.put("datetime", DateUtil.now());
 
         if (StrUtil.isNotBlank(genConfig.getComments())) {
@@ -211,7 +216,7 @@ public class GenUtils {
      * 获取文件名
      */
     private String getFileName(String template, String className, String packageName, String moduleName) {
-        String packagePath = "hdy" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
+        String packagePath = "hdy-code" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
         if (StringUtils.isNotBlank(packageName)) {
             packagePath += packageName.replace(".", File.separator) + File.separator + moduleName + File.separator;
         }
@@ -230,7 +235,7 @@ public class GenUtils {
 
 
         if (template.contains(CONTROLLER_JAVA_VM)) {
-            return packagePath + "config" + File.separator + className + "Controller.java";
+            return packagePath + "controller" + File.separator + className + "Controller.java";
         }
 
         return null;

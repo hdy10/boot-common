@@ -1,8 +1,9 @@
 package ${package}.${moduleName}.dao;
 
 import com.github.hdy.jdbcplus.data.db.BaseDao;
+import com.github.hdy.jdbcplus.result.Page;
 import ${package}.${moduleName}.entity.${className};
-import ${package}.${moduleName}.dao.${className}Dao;
+import org.springframework.stereotype.Repository;
 
 /**
  * ${comments}
@@ -17,11 +18,11 @@ public class ${className}Dao extends BaseDao<${className}, #foreach($column in $
         return super.page(${classname}, pageNumber, pageSize);
     }
 
-    public TbUser insert(${className} ${classname}) {
+    public ${className} insert(${className} ${classname}) {
         return super.insert(${classname});
     }
 
-    public TbUser update(${className} ${classname}) {
+    public ${className} update(${className} ${classname}) {
         return super.update(${classname});
     }
 
