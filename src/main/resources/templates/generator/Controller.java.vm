@@ -25,7 +25,7 @@ public class ${className}Controller {
      * 简单分页查询
      * @param pageNumber 页码
      * @param pageSize   每页显示的条数
-     * @return PageResults
+     * @return Results
      */
     @RequestMapping("/page")
     @ResponseBody
