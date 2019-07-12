@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.github.hdy.common.exceptions.SpringbootException;
+import com.github.hdy.common.exceptions.CustomException;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -93,7 +93,7 @@ public abstract class ObjectMappers {
                 jsonString = mapper.writeValueAsString(o);
             }
         } catch (JsonProcessingException e) {
-            throw new SpringbootException(e);
+            throw new CustomException(e);
         }
         return jsonString;
     }
@@ -126,7 +126,7 @@ public abstract class ObjectMappers {
                 return mapper.readValue(jsonString, clazz);
             }
         } catch (Exception e) {
-            throw new SpringbootException(e);
+            throw new CustomException(e);
         }
     }
 

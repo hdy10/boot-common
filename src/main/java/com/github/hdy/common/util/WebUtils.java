@@ -1,25 +1,9 @@
-/*
- *  Copyright (c) 2019-2020, 冷冷 (wangiegie@gmail.com).
- *  <p>
- *  Licensed under the GNU Lesser General Public License 3.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  <p>
- * https://www.gnu.org/licenses/lgpl.html
- *  <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.github.hdy.common.util;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
-import com.github.hdy.common.exceptions.CheckedException;
+import com.github.hdy.common.exceptions.CustomException;
 import com.github.hdy.common.result.Results;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -217,14 +201,14 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         String header = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
         if (header == null || !header.startsWith(BASIC_)) {
-            throw new CheckedException("请求头中client信息为空");
+            throw new CustomException("请求头中client信息为空");
         }
         byte[] base64Token = header.substring(6).getBytes("UTF-8");
         byte[] decoded;
         try {
             decoded = Base64.decode(base64Token);
         } catch (IllegalArgumentException e) {
-            throw new CheckedException(
+            throw new CustomException(
                     "Failed to decode basic authentication token");
         }
 
@@ -233,7 +217,7 @@ public class WebUtils extends org.springframework.web.util.WebUtils {
         int delim = token.indexOf(":");
 
         if (delim == -1) {
-            throw new CheckedException("Invalid basic authentication token");
+            throw new CustomException("Invalid basic authentication token");
         }
         return new String[]{token.substring(0, delim), token.substring(delim + 1)};
     }

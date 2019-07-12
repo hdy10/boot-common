@@ -1,5 +1,7 @@
 package com.github.hdy.common.util;
 
+import com.github.hdy.common.exceptions.CustomException;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -19,7 +21,7 @@ public final class Assert {
      */
     public static void isTrue(boolean expression, String message, Object... params) {
         if (!expression) {
-            throw ExceptionUtils.mpe(message, params);
+            throw new CustomException(Strings.format(message, params));
         }
     }
 

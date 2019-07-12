@@ -1,7 +1,7 @@
 package com.github.hdy.common.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.hdy.common.exceptions.SpringbootException;
+import com.github.hdy.common.exceptions.CustomException;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.Field;
@@ -42,7 +42,7 @@ public abstract class Beans {
         try {
             BeanUtils.copyProperties(source, target);
         } catch (Exception e) {
-            throw new SpringbootException(e);
+            throw new CustomException(e);
         }
     }
 
@@ -67,7 +67,7 @@ public abstract class Beans {
         try {
             BeanUtils.copyProperties(source, target, emptyStrs);
         } catch (Exception e) {
-            throw new SpringbootException(e);
+            throw new CustomException(e);
         }
     }
 }

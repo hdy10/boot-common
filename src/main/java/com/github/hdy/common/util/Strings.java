@@ -1,6 +1,6 @@
 package com.github.hdy.common.util;
 
-import com.github.hdy.common.entity.TableInfo;
+import com.github.hdy.common.exceptions.CustomException;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -15,8 +15,6 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -136,7 +134,7 @@ public class Strings {
                 byte[] returnValue = blob.getBytes(1, (int) blob.length());
                 return new String(returnValue, StandardCharsets.UTF_8);
             } catch (Exception e) {
-                throw ExceptionUtils.mpe("Blob Convert To String Error!");
+                throw new CustomException("转换异常");
             }
         }
         return null;
