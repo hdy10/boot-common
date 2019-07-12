@@ -90,6 +90,7 @@ public class GenUtils {
             columnEntity.setComments(Strings.toString(column.get("columnComment")));
             String extra = Strings.toString(column.get("extra"));
             columnEntity.setExtra(Strings.toString(Strings.isNull(extra) ? null : extra.toLowerCase()));
+            columnEntity.setIsNullBle(Strings.toString(column.get("isNullBle")));
             //列名转换成Java属性名
             String attrName = columnToJava(columnEntity.getColumnName());
             columnEntity.setCaseAttrName(attrName);
@@ -107,8 +108,11 @@ public class GenUtils {
             //是否主键
             if ("PRI".equalsIgnoreCase(Strings.toString(column.get("columnKey"))) && tableEntity.getPk() == null) {
                 tableEntity.setPk(columnEntity);
+                if (Strings.isNull(columnEntity.getComments()))
+                    columnEntity.setComments("主键ID");
             }
-
+            if (Strings.isNull(columnEntity.getComments()))
+                columnEntity.setComments(columnEntity.getLowerAttrName());
             columnList.add(columnEntity);
         }
         tableEntity.setColumns(columnList);

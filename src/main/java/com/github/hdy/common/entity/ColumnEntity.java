@@ -39,4 +39,8 @@ public class ColumnEntity {
      * 其他信息。
      */
     private String extra;
+    /**
+     * 是否允许为空
+     */
+    private String isNullBle;
 }

@@ -2,6 +2,7 @@ package ${package}.${moduleName}.entity;
 
 import com.github.hdy.jdbcplus.data.annotation.Entity;
 import com.github.hdy.jdbcplus.data.annotation.Id;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -27,6 +28,9 @@ public class ${className} {
     #if($column.columnName == $pk.columnName)
     @Id#if($column.extra == 'auto_increment')(automatic = true)
     #end
+    #end
+    #if($column.isNullBle == "NO")
+    @NotBlank(message = "$column.comments不能为空")
     #end
 private $column.attrType $column.lowerAttrName;
 #end
