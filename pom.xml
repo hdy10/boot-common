@@ -6,10 +6,10 @@
 
     <groupId>com.github.hdy10</groupId>
     <artifactId>boot-common</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <name>boot-common</name>
     <description>基于springboot的一些简单工具</description>
-    <url>https://github.com/hdy10/boot-common/</url>
+    <url></url>
     <packaging>jar</packaging>
 
     <parent>
@@ -21,7 +21,7 @@
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>https://github.com/hdy10/jdbc-plus-boot-starter</url>
+            <url></url>
         </license>
     </licenses>
     <developers>
@@ -75,11 +75,6 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.9</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>redis.clients</groupId>-->
-            <!--<artifactId>jedis</artifactId>-->
-            <!--<version>2.9.0</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
