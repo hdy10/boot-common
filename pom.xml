@@ -6,7 +6,7 @@
 
     <groupId>com.github.hdy10</groupId>
     <artifactId>boot-common</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>boot-common</name>
     <description>基于springboot的一些简单工具</description>
     <url>https://github.com/hdy10/boot-common/</url>
@@ -31,9 +31,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:https://github.com/hdy10/jdbc-plus-boot-starter.git</connection>
-        <developerConnection>scm:git:https://github.com/hdy10/jdbc-plus-boot-starter.git</developerConnection>
-        <url>https://github.com/hdy10/jdbc-plus-boot-starter.git</url>
+        <connection></connection>
+        <developerConnection></developerConnection>
+        <url></url>
     </scm>
 
     <properties>
@@ -56,6 +56,10 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.6</version>
@@ -71,11 +75,11 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.9</version>
         </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>2.9.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>redis.clients</groupId>-->
+            <!--<artifactId>jedis</artifactId>-->
+            <!--<version>2.9.0</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
