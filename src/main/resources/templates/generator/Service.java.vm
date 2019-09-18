@@ -19,19 +19,16 @@ public class ${className}Service {
     @Autowired
     private ${className}Dao ${className}Dao;
 
-    public Results page(${className} ${classname}, Integer pageNumber, Integer pageSize) {
-        return Results.success(${className}Dao.page(${classname}, pageNumber, pageSize));
+    public Results page(${className} ${classname}) {
+        return Results.success(${className}Dao.page(${classname}));
     }
 
-    public Results insert(${className} ${classname}) {
-        ${classname} =${className}Dao.insert(${classname});
-        if (${classname} ==null)
-            return Results.fail();
-        return Results.success();
-    }
-
-    public Results update(${className} ${classname}) {
-        ${classname} =${className}Dao.update(${classname});
+    public Results save(${className} ${classname}) {
+        if (Strings.isNull(${classname}.getId())){
+            ${classname} =${className}Dao.insert(${classname});
+        } else {
+            ${classname} =${className}Dao.update(${classname});
+        }
         if (${classname} ==null)
             return Results.fail();
         return Results.success();

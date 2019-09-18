@@ -8,6 +8,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -49,8 +50,10 @@ public class GlobalExceptionHandler {
             code = 401;
         } else if (e instanceof TokenInvalidException) {
             code = 403;
+        } else if (e instanceof HttpRequestMethodNotSupportedException) {
+            msg = "请求方式错误";
         } else {
-            msg = "服务器繁忙";
+            msg = e.getMessage();
         }
         return Results.custom(code, msg, null);
     }
@@ -71,6 +74,7 @@ public class GlobalExceptionHandler {
      * Valid 验证失败的异常信息
      *
      * @param e BindException异常信息
+     *
      * @return
      */
     public static String getBindExceptionMsg(BindException e) {

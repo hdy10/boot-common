@@ -11,7 +11,11 @@ import org.springframework.web.method.HandlerMethod;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 类工具类
@@ -97,4 +101,50 @@ public class ClassUtils extends org.springframework.util.ClassUtils {
         return AnnotatedElementUtils.findMergedAnnotation(beanType, annotationType);
     }
 
+    /**
+     * 获取接口成员
+     *
+     * @param clazz
+     *
+     * @return
+     */
+    public List<String> getInterfaceField(Class clazz) {
+        List<String> result = new ArrayList<>();
+        Field[] fields = clazz.getDeclaredFields();
+        if (fields == null || fields.length <= 0) {
+            return result;
+        }
+        for (Field field : fields) {
+            result.add(String.valueOf(field.getName()));
+        }
+        return result;
+    }
+
+    /**
+     * 获取接口成员值
+     *
+     * @param clazz
+     *
+     * @return
+     */
+    public List<String> getInterfaceFieldValue(Class clazz) {
+        List<String> result = new ArrayList<>();
+        Field[] fields = clazz.getDeclaredFields();
+        if (fields == null || fields.length <= 0) {
+            return result;
+        }
+
+        for (Field field : fields) {
+            field.setAccessible(true);
+            //只获取字符串类型
+            if (field.getType() == String.class && Modifier.isStatic(field.getModifiers())) {
+                try {
+                    result.add(String.valueOf(field.get(clazz)));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
 }

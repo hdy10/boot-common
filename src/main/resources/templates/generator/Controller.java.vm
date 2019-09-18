@@ -23,14 +23,12 @@ public class ${className}Controller {
 
     /**
      * 简单分页查询
-     * @param pageNumber 页码
-     * @param pageSize   每页显示的条数
      * @return Results
      */
     @RequestMapping("/page")
     @ResponseBody
-    public Results page(${className} ${classname}, Integer pageNumber, Integer pageSize) {
-        return ${classname}Service.page(${classname}, pageNumber, pageSize);
+    public Results page(${className} ${classname}) {
+        return ${classname}Service.page(${classname});
     }
 
     /**
@@ -41,7 +39,7 @@ public class ${className}Controller {
     @RequestMapping("/insert")
     @ResponseBody
     public Results insert(${className} ${classname}) {
-        return ${classname}Service.insert(${classname});
+        return ${classname}Service.save(${classname});
     }
 
     /**
@@ -52,7 +50,7 @@ public class ${className}Controller {
     @RequestMapping("update")
     @ResponseBody
     public Results update(${className} ${classname}) {
-        return ${classname}Service.update(${classname});
+        return ${classname}Service.save(${classname});
     }
 
     /**
