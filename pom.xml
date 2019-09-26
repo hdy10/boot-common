@@ -6,7 +6,7 @@
 
     <groupId>com.github.hdy10</groupId>
     <artifactId>boot-common</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <name>boot-common</name>
     <description>基于springboot的一些简单工具</description>
     <url></url>
@@ -123,6 +123,18 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
     <profiles>
         <profile>
