@@ -331,7 +331,7 @@ public class Dates {
     }
 
     /**
-     * 判断是否在之后
+     * 判断date是否在when之后
      *
      * @param date
      * @param when

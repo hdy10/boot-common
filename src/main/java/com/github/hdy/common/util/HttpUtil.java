@@ -2,18 +2,15 @@ package com.github.hdy.common.util;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -55,27 +52,19 @@ public class HttpUtil {
         return null;
     }
 
-    public static String post(String uri, List<BasicNameValuePair> params, Map<String, String> header) {
+    public static String post(String uri, String params, Map<String, String> header) {
         try {
             CloseableHttpClient client = null;
             CloseableHttpResponse response = null;
             try {
-                // 创建一个提交数据的容器
-//                List<BasicNameValuePair> parames = new ArrayList<>();
-//                parames.add(new BasicNameValuePair("code", "001"));
-//                parames.add(new BasicNameValuePair("name", "测试"));
-
-                HttpPost httpPost = new HttpPost(uri);
-                if (params != null && params.size() > 0) {
-                    httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-                }
+                HttpPost httpPost = new HttpPost(uri + params);
+                client = HttpClients.createDefault();
                 if (header != null && header.size() > 0) {
                     Set<String> keys = header.keySet();
                     for (String key : keys) {
                         httpPost.addHeader(key, header.get(key));
                     }
                 }
-                client = HttpClients.createDefault();
                 response = client.execute(httpPost);
                 HttpEntity entity = response.getEntity();
                 return EntityUtils.toString(entity);
