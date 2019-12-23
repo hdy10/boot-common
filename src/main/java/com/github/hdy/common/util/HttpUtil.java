@@ -1,15 +1,12 @@
 package com.github.hdy.common.util;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.*;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.Map;
 import java.util.Set;
@@ -144,16 +141,16 @@ public class HttpUtil {
         return null;
     }
 
-    public static String postJson(String uri, JSONObject params, Map<String, String> header) {
+    public static String postJson(String uri, String jsonStr, Map<String, String> header) {
         try {
             CloseableHttpClient client = null;
             CloseableHttpResponse response = null;
             try {
-                ObjectMapper objectMapper = new ObjectMapper();
+                StringEntity requestEntity = new StringEntity(jsonStr, "utf-8");
+                requestEntity.setContentEncoding("UTF-8");
                 HttpPost httpPost = new HttpPost(uri);
                 httpPost.setHeader(HTTP.CONTENT_TYPE, "application/json");
-                httpPost.setEntity(new StringEntity(objectMapper.writeValueAsString(params),
-                        ContentType.create("text/json", "UTF-8")));
+                httpPost.setEntity(requestEntity);
                 client = HttpClients.createDefault();
                 if (header != null && header.size() > 0) {
                     Set<String> keys = header.keySet();
