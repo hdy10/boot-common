@@ -19,7 +19,19 @@ import java.util.Set;
  */
 public class HttpUtil {
 
+    private static String handleParams(String params, String uri) {
+        if (Strings.isNull(params)) {
+            return "";
+        } else {
+            if (!params.startsWith("?") && !uri.endsWith("?")) {
+                return "?" + params;
+            }
+            return params;
+        }
+    }
+
     public static String get(String uri, String params, Map<String, String> header) {
+        params = handleParams(params, uri);
         try {
             CloseableHttpClient client = null;
             CloseableHttpResponse response = null;
@@ -50,6 +62,7 @@ public class HttpUtil {
     }
 
     public static String post(String uri, String params, Map<String, String> header) {
+        params = handleParams(params, uri);
         try {
             CloseableHttpClient client = null;
             CloseableHttpResponse response = null;
@@ -80,6 +93,7 @@ public class HttpUtil {
     }
 
     public static String delete(String uri, String params, Map<String, String> header) {
+        params = handleParams(params, uri);
         try {
             CloseableHttpClient client = null;
             CloseableHttpResponse response = null;
@@ -111,6 +125,7 @@ public class HttpUtil {
     }
 
     public static String put(String uri, String params, Map<String, String> header) {
+        params = handleParams(params, uri);
         try {
             CloseableHttpClient client = null;
             CloseableHttpResponse response = null;
@@ -149,7 +164,6 @@ public class HttpUtil {
                 StringEntity requestEntity = new StringEntity(jsonStr, "utf-8");
                 requestEntity.setContentEncoding("UTF-8");
                 HttpPost httpPost = new HttpPost(uri);
-                httpPost.setHeader(HTTP.CONTENT_TYPE, "application/json");
                 httpPost.setEntity(requestEntity);
                 client = HttpClients.createDefault();
                 if (header != null && header.size() > 0) {
@@ -157,6 +171,8 @@ public class HttpUtil {
                     for (String key : keys) {
                         httpPost.addHeader(key, header.get(key));
                     }
+                } else {
+                    httpPost.setHeader(HTTP.CONTENT_TYPE, "application/json");
                 }
                 response = client.execute(httpPost);
                 HttpEntity entity = response.getEntity();
