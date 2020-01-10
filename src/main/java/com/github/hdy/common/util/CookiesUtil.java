@@ -20,7 +20,6 @@ public class CookiesUtil {
      *
      * @param request
      * @param name    cookie名字
-     *
      * @return
      */
     public static String getCookieByName(HttpServletRequest request, String name) {
@@ -37,7 +36,6 @@ public class CookiesUtil {
      * 将cookie封装到Map里面
      *
      * @param request
-     *
      * @return
      */
     private static Map<String, Cookie> ReadCookieMap(HttpServletRequest request) {
@@ -56,8 +54,6 @@ public class CookiesUtil {
      *
      * @param response servlet请求
      * @param value    保存值
-     *
-     * @author jxf
      */
     public static HttpServletResponse setCookie(HttpServletResponse response, String name, String value, int time) {
         // new一个Cookie对象,键值对为参数

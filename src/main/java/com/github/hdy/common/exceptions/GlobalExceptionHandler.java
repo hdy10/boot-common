@@ -52,8 +52,6 @@ public class GlobalExceptionHandler {
             code = 403;
         } else if (e instanceof HttpRequestMethodNotSupportedException) {
             msg = "请求方式错误";
-        } else {
-            msg = e.getMessage();
         }
         return Results.custom(code, msg, null);
     }
@@ -74,7 +72,6 @@ public class GlobalExceptionHandler {
      * Valid 验证失败的异常信息
      *
      * @param e BindException异常信息
-     *
      * @return
      */
     public static String getBindExceptionMsg(BindException e) {

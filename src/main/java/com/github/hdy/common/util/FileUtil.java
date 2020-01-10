@@ -65,7 +65,6 @@ public class FileUtil {
      * 删除文件
      *
      * @param fileName
-     *
      * @return
      */
     public static void deleteFile(String fileName) {
@@ -80,13 +79,12 @@ public class FileUtil {
      * 导出excel
      *
      * @param list      数据
-     * @param response
      * @param fileName  文件名
      * @param sheetName sheet名
      * @param titles    表头
      * @param fields    表头对应的字段
      */
-    public static void export(List<Map<String, Object>> list, HttpServletResponse response, String fileName, String sheetName, String[] titles, String[] fields) {
+    public static void export(List<Map<String, Object>> list, String fileName, String sheetName, String[] titles, String[] fields, HttpServletResponse response) {
         // 创建一个新的Excel
         HSSFWorkbook workBook = new HSSFWorkbook();
         // 创建sheet页

@@ -1,5 +1,11 @@
 package com.github.hdy.common.util;
 
+import com.github.hdy.common.spring.SpringContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -15,25 +21,50 @@ import java.security.SecureRandom;
  * @author 贺大爷
  * @date 2018/2/6
  */
+@Component
 public class AESUtil {
 
-    private static final String PASSWORD = "hdyshinidie";
-    private static final String PASSWORD_T = "hdyshinidie_t";
+    private static String password;
+    private static String password_d;
 
+    // static变量需要set一下
+    @Value("${aes.password:hdyshinidie}")
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Value("${aes.password.t:hdyshinidie_t}")
+    public void setPassword_d(String password_d) {
+        this.password_d = password_d;
+    }
 
     /**
      * 加密
      *
      * @param content 需要加密的内容
-     *
      * @return
      */
     public static String encrypt(String content) {
         String os = System.getProperties().getProperty("os.name");
         if (os.toLowerCase().contains("window")) {
-            return windowsEncrypt(windowsEncrypt(content, null), PASSWORD_T);
+            return windowsEncrypt(windowsEncrypt(content, null), password_d);
         } else {
-            return linuxEncrypt(linuxEncrypt(content, null), PASSWORD_T);
+            return linuxEncrypt(linuxEncrypt(content, null), password_d);
+        }
+    }
+
+    /**
+     * 解密
+     *
+     * @param content 待解密内容
+     * @return
+     */
+    public static String decrypt(String content) {
+        String os = System.getProperties().getProperty("os.name");
+        if (os.toLowerCase().contains("window")) {
+            return windowsDecrypt(windowsDecrypt(content, password_d), null);
+        } else {
+            return linuxDecrypt(linuxDecrypt(content, password_d), null);
         }
     }
 
@@ -43,12 +74,11 @@ public class AESUtil {
      *
      * @param content 需要加密的内容
      * @param keys    加密密码
-     *
      * @return
      */
-    public static String windowsEncrypt(String content, String keys) {
+    private static String windowsEncrypt(String content, String keys) {
         if (Strings.isNull(keys)) {
-            keys = PASSWORD;
+            keys = password;
         }
         try {
             KeyGenerator kgen = KeyGenerator.getInstance("AES");
@@ -82,12 +112,11 @@ public class AESUtil {
      *
      * @param content 需要加密的内容
      * @param keys    加密密码
-     *
      * @return
      */
-    public static String linuxEncrypt(String content, String keys) {
+    private static String linuxEncrypt(String content, String keys) {
         if (Strings.isNull(keys)) {
-            keys = PASSWORD;
+            keys = password;
         }
         try {
             KeyGenerator kgen = KeyGenerator.getInstance("AES");
@@ -119,33 +148,15 @@ public class AESUtil {
     }
 
     /**
-     * 解密
-     *
-     * @param content 待解密内容
-     *
-     * @return
-     */
-    public static String decrypt(String content) {
-        String os = System.getProperties().getProperty("os.name");
-        if (os.toLowerCase().contains("window")) {
-            return windowsDecrypt(windowsDecrypt(content, PASSWORD_T), null);
-        } else {
-            return linuxDecrypt(linuxDecrypt(content, PASSWORD_T), null);
-        }
-    }
-
-
-    /**
      * 解密 window
      *
      * @param contents 待解密内容
      * @param keys     解密密钥
-     *
      * @return
      */
-    public static String windowsDecrypt(String contents, String keys) {
+    private static String windowsDecrypt(String contents, String keys) {
         if (Strings.isNull(keys)) {
-            keys = PASSWORD;
+            keys = password;
         }
         byte[] content = parseHexStr2Byte(contents);
         try {
@@ -180,12 +191,11 @@ public class AESUtil {
      *
      * @param contents 待解密内容
      * @param keys     解密密钥
-     *
      * @return
      */
-    public static String linuxDecrypt(String contents, String keys) {
+    private static String linuxDecrypt(String contents, String keys) {
         if (Strings.isNull(keys)) {
-            keys = PASSWORD;
+            keys = password;
         }
         byte[] content = parseHexStr2Byte(contents);
         try {
@@ -221,7 +231,6 @@ public class AESUtil {
      * 将二进制转换成16进制
      *
      * @param buf
-     *
      * @return
      */
     private static String parseByte2HexStr(byte buf[]) {
@@ -241,7 +250,6 @@ public class AESUtil {
      * 将16进制转换为二进制
      *
      * @param hexStr
-     *
      * @return
      */
     private static byte[] parseHexStr2Byte(String hexStr) {
