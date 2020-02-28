@@ -42,6 +42,7 @@ public class FileUtil {
         while (iter.hasNext()) {
             //一次遍历所有文件
             MultipartFile file = multiRequest.getFile(iter.next().toString());
+            long fileSize = file.getSize();
             String originalFileName = file.getOriginalFilename();
             String suffix = originalFileName.substring(originalFileName.lastIndexOf("."));
             String newFileName = IdWorker.getIdStr();
@@ -52,7 +53,7 @@ public class FileUtil {
             Files files = new Files();
             files.setOriginalFileName(originalFileName);
             files.setFileName(newFileName);
-            files.setSize(file.getSize());
+            files.setSize(fileSize);
             files.setSuffix(suffix.substring(1));
             files.setIndex(i);
             result.add(files);
@@ -137,15 +138,4 @@ public class FileUtil {
             e.printStackTrace();
         }
     }
-
-}
-
-@Getter
-@Setter
-class Files {
-    private String originalFileName;    // 原文件名称
-    private String fileName;            // 储存文件名称
-    private long size;                  // 文件大小
-    private String suffix;              // 文件类型
-    private int index;                  // 第几个文件
 }
