@@ -6,7 +6,7 @@
 
     <groupId>com.github.hdy10</groupId>
     <artifactId>boot-common</artifactId>
-    <version>1.0.8</version>
+    <version>1.1.0</version>
     <name>boot-common</name>
     <description>基于springboot的一些简单工具</description>
     <url></url>
